@@ -1,0 +1,24 @@
+Versão do QGIS: 3.34.10-Prizren
+Código de revisão do QGIS: 113de9e1
+Versão do Qt: 5.15.13
+Versão do Python: 3.12.5
+Versão do GDAL: 3.9.2
+Versão do GEOS: 3.12.2-CAPI-1.18.2
+Versão do PROJ: Rel. 9.4.0, March 1st, 2024
+Versão PDAL: 2.6.3 (git-version: b5523a)
+Algoritmo iniciado as: 2024-12-10T20:29:05
+Algoritmo 'Construir raster virtual' iniciando…
+Input parameters:
+{ 'ADD_ALPHA' : False, 'ASSIGN_CRS' : None, 'EXTRA' : '', 'INPUT' : ['D:/OneDrive/Área de Trabalho/VERAO/S2A_MSIL2A_20230424T132231_N0509_R038_T23KKR_20230424T183102.SAFE/GRANULE/L2A_T23KKR_A040933_20230424T132232/IMG_DATA/R10m/T23KKR_20230424T132231_B04_10m.jp2','D:/OneDrive/Área de Trabalho/VERAO/S2A_MSIL2A_20230424T132231_N0509_R038_T23KKR_20230424T183102.SAFE/GRANULE/L2A_T23KKR_A040933_20230424T132232/IMG_DATA/R10m/T23KKR_20230424T132231_B08_10m.jp2'], 'OUTPUT' : 'TEMPORARY_OUTPUT', 'PROJ_DIFFERENCE' : True, 'RESAMPLING' : 0, 'RESOLUTION' : 0, 'SEPARATE' : True, 'SRC_NODATA' : '' }
+
+Comando GDAL:
+gdalbuildvrt -overwrite -resolution average -separate -allow_projection_difference -r nearest -input_file_list C:/Users/e6m3m/AppData/Local/Temp/processing_utSUPB/e6b312789659472db7421182d6d688be/buildvrtInputFiles.txt C:/Users/e6m3m/AppData/Local/Temp/processing_utSUPB/a05e94461d444acebb9443a8cdde0a9e/OUTPUT.vrt
+Saída do comando GDAL:
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Processo concluído com sucesso
+Execution completed in 0.70 seconds
+Results:
+{'OUTPUT': 'C:/Users/e6m3m/AppData/Local/Temp/processing_utSUPB/a05e94461d444acebb9443a8cdde0a9e/OUTPUT.vrt'}
+
+Carregando camada resultante
+Algorithm 'Construir raster virtual' finished
