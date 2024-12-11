@@ -1,0 +1,116 @@
+// Carregar a imagem NDVI
+var imagemInverno = ee.Image('projects/ee-emmanuellymaria/assets/Inverno_2023');
+
+// Carregar o shapefile como região de interesse (ROI)
+var roiShapefile = ee.FeatureCollection('projects/ee-emmanuellymaria/assets/shpAFA');
+
+// Função para calcular NDVI
+function calcularNDVI(image) {
+  return image.normalizedDifference(['b1', 'b2']).rename('NDVI'); // Bandas do NDVI: B8 (NIR), B4 (Red)
+}
+
+// Calcular o NDVI da imagem
+var ndviInverno = calcularNDVI(imagemInverno);
+
+// Calcular os percentis usando o shapefile como ROI
+var percentiles = ndviInverno.reduceRegion({
+  reducer: ee.Reducer.percentile([25, 50, 75]),
+  geometry: roiShapefile.geometry(),
+  scale: 10,  // A escala é ajustada conforme necessário
+  maxPixels: 1e13
+});
+
+// Obter os valores dos percentis
+var q25 = ee.Number(percentiles.get('NDVI_p25'));
+var q50 = ee.Number(percentiles.get('NDVI_p50'));
+var q75 = ee.Number(percentiles.get('NDVI_p75'));
+
+// Criar imagens a partir dos quartis
+var q25Image = ee.Image(q25).rename('q25');
+var q50Image = ee.Image(q50).rename('q50');
+var q75Image = ee.Image(q75).rename('q75');
+
+// Classificar o NDVI em quartis utilizando .where()
+var ndviClassificadoInverno = ndviInverno
+  .where(ndviInverno.lt(q25Image), 0)  // Muito baixo
+  .where(ndviInverno.gte(q25Image).and(ndviInverno.lt(q50Image)), 1)  // Baixo
+  .where(ndviInverno.gte(q50Image).and(ndviInverno.lt(q75Image)), 2)  // Moderado
+  .where(ndviInverno.gte(q75Image), 3);  // Alto
+
+// Aplicar paleta de cores
+var palette = ['#d7191c', '#fdae61', '#ffffbf', '#abdda4', '#0a480a'];
+var ndviVizParams = {
+  min: 0,
+  max: 3, // Número de classes (0 a 3)
+  palette: palette
+};
+
+// Função para criar a legenda
+function criarLegenda(paleta, rótulos) {
+  var legenda = ui.Panel({
+    style: {
+      position: 'bottom-left',
+      padding: '8px 15px'
+    }
+  });
+
+  // Título da legenda
+  var título = ui.Label({
+    value: 'Legenda - NDVI Classificado',
+    style: { fontWeight: 'bold', fontSize: '16px', margin: '0 0 8px 0', padding: '0' }
+  });
+  legenda.add(título);
+
+  // Adicionar cada cor e rótulo
+  for (var i = 0; i < paleta.length; i++) {
+    var cor = ui.Label({
+      style: {
+        backgroundColor: paleta[i],
+        padding: '8px',
+        margin: '0 0 4px 0'
+      }
+    });
+    var texto = ui.Label({
+      value: rótulos[i],
+      style: { margin: '0 0 4px 6px' }
+    });
+
+    var linha = ui.Panel({
+      widgets: [cor, texto],
+      layout: ui.Panel.Layout.Flow('horizontal')
+    });
+    legenda.add(linha);
+  }
+
+  return legenda;
+}
+
+// Rótulos correspondentes às classes
+var labels = [
+  'Muito baixo (< Q1)',
+  'Baixo (Q1 - Q2)',
+  'Moderado (Q2 - Q3)',
+  'Alto (Q3 - Q4)',
+  'Muito alto (Q4-Q5)'
+];
+
+// Recortar o NDVI classificado para o ROI
+var ndviClassificadoClipInverno = ndviClassificadoInverno.clip(roiShapefile);
+
+// Adicionar a camada recortada ao mapa
+Map.addLayer(ndviClassificadoClipInverno, ndviVizParams, 'NDVI Classificado Inverno (Recortado)');
+
+// Criar a legenda e adicioná-la ao painel da UI
+var legenda = criarLegenda(palette, labels);
+Map.add(legenda);
+
+// Exportar a imagem classificada para o Google Drive
+Export.image.toDrive({
+  image: ndviClassificadoClipInverno.reproject({crs: 'EPSG:32723', scale: 10}),
+  description: 'NDVI_Classificado_Inverno_2023',
+  folder: 'GEE_Exports', //Nome da pasta no Google Drive
+  fileNamePrefix: 'NDVI_Classificado_Inverno_2023',
+  scale: 10,  // Resolução (em metros) da imagem exportada
+  region: roiShapefile.geometry(), // Região de interesse (ROI) baseada no shapefile
+  maxPixels: 1e13 //Limite máximo de pixels para exportação
+});

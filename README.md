@@ -56,7 +56,9 @@ Mapear e analisar os fragmentos florestais presentes na área de estudo por meio
 - `/data`: Contém arquivos de entrada, como imagens GeoTIFF processadas.
 - `/scripts`: Scripts para o QGIS e Google Earth Engine.
 - `/results`: Mapas e relatórios gerados.
-
+- `/links`: Inclui:
+  - **Link Raster**: URLs para as imagens raster utilizadas.
+  - **Link Google Engine**: URLs para os produtos gerados.
 ## Referências
 - Metternicht, G., & Teece, S. (2023). *Remote Sensing for Resource Monitoring*.
 - Gamarra, J. G., et al. (2016). *NDVI Temporal Analysis*.
