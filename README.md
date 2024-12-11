@@ -51,6 +51,16 @@ Mapear e analisar os fragmentos florestais presentes na área de estudo por meio
    - Siga as etapas descritas na seção "Limpeza de Dados".
 3. **Análise no Google Earth Engine**:
    - Use os scripts fornecidos neste repositório para calcular e classificar o NDVI.
+  
+ ## Relatório Completo
+
+O relatório **RelatorioCompleto_ProjetoNDVI.pdf** contém uma descrição detalhada do passo a passo utilizado neste projeto, incluindo:  
+- **Metodologia completa**: Desde a coleta até a análise dos dados.  
+- **Códigos utilizados**: Scripts detalhados em Python e Google Earth Engine.  
+- **Resultados apresentados**: Mapas, gráficos e tabelas de análise.  
+
+Acesse o relatório aqui:  
+📄 [RelatorioCompleto_ProjetoNDVI.pdf](./RelatorioCompleto_ProjetoNDVI.pdf)
 
 ## Estrutura do Repositório
 - `/data`: Contém arquivos de entrada, como imagens GeoTIFF processadas.
@@ -60,6 +70,7 @@ Mapear e analisar os fragmentos florestais presentes na área de estudo por meio
   - **Link Raster**: URLs para as imagens raster utilizadas.
   - **Link Google Engine**: URLs para os produtos gerados.
   - - `/Roi_AreaEstudada`: Contém o arquivo `.shp` correspondente à área de estudo utilizada para análises no Google Earth Engine.
+      
 ## Referências
 - BOYDE, D. S.; DANSON, F. M. Satellite remote sensing of forest resources: Three decades of research development. *Progress in Physical Geography*, Thousand Oaks, v. 29, p. 1-26, 2005.
 - FERNANDES, E. M. S.; SEBASTIANI, R.; SAIS, A. C. Mapeamento dos fragmentos florestais da Guarnição da Aeronáutica de Pirassununga (Estado de São Paulo, Brasil). *Pesquisa, Sociedade e Desenvolvimento*, v. 12, e194111234239, 2022.
